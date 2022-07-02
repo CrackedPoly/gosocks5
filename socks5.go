@@ -580,8 +580,8 @@ func (r *Reply) Write(w io.Writer) (err error) {
 
 	remoteIP := net.ParseIP(r.Addr.Host)
 	b[4], b[5], b[6], b[7] = remoteIP[0], remoteIP[1], remoteIP[2], remoteIP[3]
-	b[8] = r.Addr.Port >> 8
-	b[9] = (r.Addr.Port << 8) >> 8
+	b[8] = byte(r.Addr.Port >> 8)
+	b[9] = byte((r.Addr.Port << 8) >> 8)
 
 	if r.Addr != nil {
 		n, _ := r.Addr.Encode(b[3:])
