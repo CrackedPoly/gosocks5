@@ -577,7 +577,11 @@ func (r *Reply) Write(w io.Writer) (err error) {
 	b[2] = 0        //rsv
 	b[3] = AddrIPv4 // default
 	length := 10
-	b[4], b[5], b[6], b[7], b[8], b[9] = 0, 0, 0, 0, 0, 0 // reset address field
+
+	remoteIP := net.ParseIP(r.Addr.Host)
+	b[4], b[5], b[6], b[7] = remoteIP[0], remoteIP[1], remoteIP[2], remoteIP[3]
+	b[8] = r.Addr.Port >> 8
+	b[9] = (r.Addr.Port << 8) >> 8
 
 	if r.Addr != nil {
 		n, _ := r.Addr.Encode(b[3:])
