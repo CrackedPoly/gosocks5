@@ -578,13 +578,6 @@ func (r *Reply) Write(w io.Writer) (err error) {
 	b[3] = AddrIPv4 // default
 	length := 10
 
-	remoteIP := net.ParseIP(r.Addr.Host).To4()
-	b[4], b[5], b[6], b[7] = remoteIP[3], remoteIP[2], remoteIP[1], remoteIP[0]
-	p := make([]byte, 2)
-	binary.BigEndian.PutUint16(p[0:], r.Addr.Port)
-	b[8] = p[0]
-	b[9] = p[1]
-
 	if r.Addr != nil {
 		n, _ := r.Addr.Encode(b[3:])
 		length = 3 + n
